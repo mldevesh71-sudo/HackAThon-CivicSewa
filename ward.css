@@ -1,0 +1,14 @@
+/* css/color-mode.css */
+body.dark-theme {
+    --bg-light: #070b14;
+    --card-bg: #111827;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.5);
+    border-color: rgba(255,255,255,0.05);
+}
+
+body.dark-theme .top-navbar {
+    background: rgba(17, 24, 39, 0.8);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CivicSewa - Citizen Dashboard</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <link rel="stylesheet" href="../../css/base.css">
+    <link rel="stylesheet" href="../../css/citizen.css">
+</head>
+<body>
+
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-wrap">
+                <i class="bi bi-buildings"></i> 
+                <span class="nav-text">CivicSewa</span>
+            </div>
+            <i class="bi bi-list fs-3 text-secondary" id="sidebarToggle" style="cursor: pointer; transition: 0.2s;"></i>
+        </div>
+        
+        <a href="dashboard.html" class="nav-link"><i class="bi bi-grid-1x2"></i> <span class="nav-text" data-i18n="dashboardNav">Dashboard</span></a>
+        <a href="my-complaints.html" class="nav-link"><i class="bi bi-file-earmark-text"></i> <span class="nav-text" data-i18n="myComplaintsNav">My Complaints</span></a>
+        
+        <a href="documents.html" class="nav-link"><i class="bi bi-file-earmark-pdf"></i> <span class="nav-text" data-i18n="documentsNav">Documents</span></a>
+        
+        <a href="broadcast.html" class="nav-link"><i class="bi bi-megaphone"></i> <span class="nav-text" data-i18n="broadcastNav">Broadcast</span></a>
+        <a href="road.html" class="nav-link"><i class="bi bi-geo-alt"></i> <span class="nav-text" data-i18n="map">Map</span></a>
+        <a href="chatbot.html" class="nav-link"><i class="bi bi-robot"></i> <span class="nav-text" data-i18n="aiChatbot">Chatbot</span></a>
+        <a href="settings.html" class="nav-link"><i class="bi bi-gear"></i> <span class="nav-text" data-i18n="settingsNav">Settings</span></a>
+        
+        <button id="logoutBtn" class="sign-out-btn w-100 border-0 mt-auto" data-bs-toggle="modal" data-bs-target="#signOutModal">
+            <i class="bi bi-box-arrow-right"></i> <span class="nav-text" data-i18n="signOut">Sign Out</span>
+        </button>
+    </nav>
+    <main class="main-wrapper">
+        
+        <header class="top-nav">
+            <div class="search-container">
+                <i class="bi bi-search text-secondary"></i>
+                <input type="text" placeholder="Search..." data-i18n="searchPlaceholder">
+            </div>
+            
+            <div class="profile-section">
+                <select id="languageSelect" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 8px; padding: 6px 12px; cursor: pointer; outline: none; appearance: auto;">
+                    <option value="en" style="background: #110d20; color: white;">English</option>
+                    <option value="np" style="background: #110d20; color: white;">नेपाली</option>
+                </select>
+
+                <div class="user-info ps-3 border-start border-secondary">
+                    <img src="https://ui-avatars.com/api/?name=Citizen&background=random" id="userAvatar" alt="User Avatar" class="rounded-circle" width="42" height="42">
+                    <div style="line-height: 1.3;">
+                        <div class="fw-bold" style="font-size: 0.95rem;"><span id="uNameTop">Loading...</span> |</div>
+                        <div id="uWard" style="font-size: 0.85rem; color: var(--text-muted);">Ward : --</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <h1 class="greeting-title">
+            <span id="welcomeTextLabel" data-i18n="hi">Hi</span>, <span id="uNameMain">...</span>
+        </h1>
+        
+        <div class="content-layout">
+            
+            <div>
+                <div class="modules-grid">
+                    <div class="glass-box grid-card">
+                        <i class="bi bi-bar-chart-line grid-icon"></i>
+                        <div class="grid-title" data-i18n="compSummary">Complaint<br>Summary</div>
+                        <div class="grid-subtitle d-flex gap-2 mt-2">
+                            <span class="text-warning">Active: <span id="activeCount">0</span></span>
+                            <span class="text-success">Done: <span id="resolvedCount">0</span></span>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-box grid-card" onclick="window.location.href='my-complaints.html'">
+                        <i class="bi bi-table grid-icon"></i>
+                        <div class="grid-title" data-i18n="liveTracking">Live<br>Tracking</div>
+                    </div>
+                    
+                    <div class="glass-box grid-card" onclick="window.location.href='road.html'">
+                        <i class="bi bi-geo-alt grid-icon"></i>
+                        <div class="grid-title" data-i18n="map">Map</div>
+                    </div>
+                    
+                    <div class="glass-box grid-card" onclick="window.location.href='chatbot.html'">
+                        <i class="bi bi-chat-square-text grid-icon"></i>
+                        <div class="grid-title" data-i18n="aiChatbot">AI Chatbot</div>
+                    </div>
+
+                    <div class="glass-box grid-card">
+                        <i class="bi bi-graph-up-arrow grid-icon icon-gold"></i>
+                        <div class="grid-title" data-i18n="liveGold">Live Gold<br>Values</div>
+                        <div class="grid-subtitle">Au 99.5:<br>Rs. 108,500 / 10g</div>
+                    </div>
+                    
+                    <div class="glass-box grid-card">
+                        <i class="bi bi-megaphone grid-icon icon-news"></i>
+                        <div class="grid-title"><span data-i18n="breakingNews">Breaking News</span><br><span style="font-size:0.75rem; font-weight: 400;" data-i18n="hottestTopics">(Hottest Topics)</span></div>
+                        <div class="grid-subtitle" data-i18n="nepalElectionFocus">Current Focus: Nepal<br>General Elections...</div>
+                    </div>
+                    
+                    <div class="glass-box grid-card">
+                        <i class="bi bi-cloud-sun grid-icon icon-weather"></i>
+                        <div class="grid-title" data-i18n="weather">Lalitpur<br>Weather</div>
+                        <div class="grid-subtitle">22°C / <span data-i18n="partlyCloudy">Partly Cloudy</span></div>
+                    </div>
+                    
+                    <div class="glass-box grid-card">
+                        <i class="bi bi-wind grid-icon icon-air"></i>
+                        <div class="grid-title" data-i18n="airQuality">Lalitpur Air<br>Quality</div>
+                        <div class="grid-subtitle text-success" style="opacity: 0.9;">AQI: 65 / <span data-i18n="good">Good</span> <i class="bi bi-check-circle-fill ms-1"></i></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-panels">
+                <div class="glass-box panel-block" style="max-height: calc(100vh - 180px); overflow-y: auto;">
+                    
+                    <div class="panel-heading" data-i18n="upcomingEvents">Upcoming Events & Announcements</div>
+                    <ul class="bullet-list mb-0" id="updatesList">
+                        <li data-i18n="cleanlinessOct20th">Loading events...</li>
+                    </ul>
+                    
+                    <hr class="border-secondary opacity-25 my-4">
+                    
+                    <div class="panel-heading mt-2" data-i18n="latestBroadcast">Latest Broadcast</div>
+                    <div id="latestBroadcastContent" style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5;" data-i18n="saturdayCleanliness">
+                        Loading latest broadcast...
+                    </div>
+
+                    <hr class="border-secondary opacity-25 my-4">
+
+                    <div class="panel-heading mt-2 mb-3" data-i18n="emergencyContacts">Emergency Contacts (Nepal)</div>
+                    <div class="emergency-btn">
+                        <div class="em-icon em-police"><i class="bi bi-shield-check"></i></div>
+                        <div class="em-text" data-i18n-em="policeEmergency">Police & General<br>Emergency - 100</div>
+                    </div>
+                    <div class="emergency-btn">
+                        <div class="em-icon em-fire"><i class="bi bi-fire"></i></div>
+                        <div class="em-text" data-i18n-em="fireService">Fire Service - 101</div>
+                    </div>
+                    <div class="emergency-btn mb-0">
+                        <div class="em-icon em-ambulance"><i class="bi bi-heart-pulse-fill"></i></div>
+                        <div class="em-text" data-i18n-em="ambulanceService">Ambulance Service - 102</div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <div class="modal fade glass-modal" id="signOutModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content">
+                <div class="modal-body text-center p-4">
+                    <i class="bi bi-box-arrow-right text-danger fs-1 mb-3 d-block"></i>
+                    <h5 class="mb-2 fw-bold">Sign Out</h5>
+                    <p class="text-muted small mb-4">Are you sure you want to sign out of CivicSewa?</p>
+                    <div class="d-flex gap-2 justify-content-center">
+                        <button type="button" class="btn btn-outline-light btn-sm w-50" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger btn-sm w-50" id="confirmSignOutBtn">Sign Out</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.getElementById('sidebarToggle').addEventListener('click', function() {
+            document.body.classList.toggle('sidebar-collapsed');
+        });
+    </script>
+
+    <script>
+        const dashboardTranslations = {
+            en: {
+                dashboardNav: "Dashboard", myComplaintsNav: "My complaint", broadcastNav: "Broadcast",
+                map: "Map", aiChatbot: "AI Chatbot", settingsNav: "Settings", signOut: "Sign Out",
+                searchPlaceholder: "Search...", hi: "Hi", compSummary: "Complaint Summary",
+                liveTracking: "Live Tracking", liveGold: "Live Gold Values", breakingNews: "Breaking News",
+                hottestTopics: "(Hottest Topics)", nepalElectionFocus: "Current Focus: Nepal General Elections - Count Progress",
+                weather: "Lalitpur Weather", partlyCloudy: "Partly Cloudy", airQuality: "Lalitpur Air Quality",
+                good: "Good", upcomingEvents: "Upcoming Events & Announcements", cleanlinessOct20th: "Ward Cleanliness Drive - Oct 20th",
+                latestBroadcast: "Latest Broadcast", saturdayCleanliness: "Saturday Cleanliness Drive! Meet at Ward Office, 8 AM.",
+                emergencyContacts: "Emergency Contacts (Nepal)"
+            },
+            np: {
+                dashboardNav: "मुख्य विवरण", myComplaintsNav: "मेरा गुनासोहरू", broadcastNav: "प्रसारण",
+                map: "नक्सा", aiChatbot: "एआई च्याटबोट", settingsNav: "सेटिङहरू", signOut: "साइन आऊट",
+                searchPlaceholder: "खोज्नुहोस्...", hi: "नमस्ते", compSummary: "गुनासोको सारांश",
+                liveTracking: "लाइभ ट्र्याकिङ", liveGold: "लाइभ सुनको मूल्य", breakingNews: "ताजा समाचार",
+                hottestTopics: "(प्रमुख विषयहरू)", nepalElectionFocus: "हालको फोकस: नेपाल आम निर्वाचन - मतगणनाको प्रगति",
+                weather: "ललितपुरको मौसम", partlyCloudy: "आंशिक बदली", airQuality: "ललितपुर हावाको गुणस्तर",
+                good: "राम्रो", upcomingEvents: "आगामी कार्यक्रम र घोषणाहरू", cleanlinessOct20th: "वडा सरसफाई अभियान - असोज २०",
+                latestBroadcast: "पछिल्लो प्रसारण", saturdayCleanliness: "शनिबार सरसफाई अभियान! वडा कार्यालयमा भेट्नुहोस्, बिहान ८ बजे।",
+                emergencyContacts: "आपत्कालीन सम्पर्कहरू (नेपाल)"
+            }
+        };
+
+        const langSelect = document.getElementById("languageSelect");
+        
+        function applyLanguage(lang) {
+            const data = dashboardTranslations[lang] || dashboardTranslations.en;
+            
+            // Translate main tags
+            document.querySelectorAll("[data-i18n]").forEach((el) => {
+                const key = el.getAttribute("data-i18n");
+                if (data[key]) {
+                    if (el.tagName === "INPUT") el.placeholder = data[key];
+                    else el.innerText = data[key];
+                }
+            });
+
+            // Translate emergency tags specifically
+            document.querySelectorAll("[data-i18n-em]").forEach((el) => {
+                const key = el.getAttribute("data-i18n-em");
+                if (data[key]) el.innerHTML = data[key]; // use innerHTML to preserve <br>
+            });
+        }
+
+        // Initialize Language immediately
+        const savedLang = localStorage.getItem("lang") || "en";
+        langSelect.value = savedLang;
+        applyLanguage(savedLang);
+
+        // Listen for Dropdown Changes
+        langSelect.addEventListener("change", function() {
+            localStorage.setItem("lang", this.value);
+            applyLanguage(this.value);
+        });
+    </script>
+
+    <script type="module" src="../../js/citizen/dashboard.js"></script>
+
+    <script type="module">
+        import { auth } from "../../js/core/firebase-config.js";
+        import { signOut } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+
+        document.getElementById('confirmSignOutBtn').addEventListener('click', function() {
+            this.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Signing Out...';
+            this.disabled = true;
+
+            signOut(auth).then(() => {
+                // Hard replace the URL. Ensures we drop the citizen folder context entirely.
+                window.location.href = "../../index.html";
+            }).catch((error) => {
+                console.error("Sign Out Error:", error);
+                alert("Failed to sign out. Check console.");
+                this.innerHTML = 'Sign Out';
+                this.disabled = false;
+            });
+        });
+    </script>
+</body>
+</html>

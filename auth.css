@@ -1,0 +1,35 @@
+/* =====================================================
+   CIVICSEWA - AUTHENTICATION LAYOUT
+===================================================== */
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-light); 
+    /* Soft glowing orbs in the background matching the Canva vibe */
+    background-image: radial-gradient(circle at 15% 50%, rgba(92, 175, 219, 0.1), transparent 25%),
+                      radial-gradient(circle at 85% 30%, rgba(0, 109, 164, 0.1), transparent 25%);
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 450px;
+    background: var(--card-bg);
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: var(--shadow-hover);
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.logo-title { 
+    font-weight: 800; 
+    color: var(--bg-ocean); 
+    font-size: 28px; 
+    text-align: center; 
+    margin-bottom: 30px;
+}
+
+.logo-title span { 
+    color: var(--accent-light); 
+}

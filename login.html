@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CivicSewa | Sign In</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/global-glassmorphism.css">
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+
+<a href="index.html" class="position-absolute top-0 start-0 m-4 text-decoration-none text-muted fw-semibold d-flex align-items-center gap-2" style="z-index: 100;">
+    <i class="bi bi-arrow-left"></i> Back to Home
+</a>
+
+<div class="auth-container w-100">
+    <div class="auth-card bento-card mx-3">
+        <div class="text-center mb-4">
+            <h2 class="logo-title" style="font-weight: 800; color: var(--bg-ocean); letter-spacing: -1px;">
+                Civic<span style="color: var(--accent-light);">Sewa</span>
+            </h2>
+            <p class="text-muted small fw-medium mt-2">Sign in to your digital civic portal</p>
+        </div>
+
+        <form>
+            <div class="mb-3">
+                <label class="form-label text-muted small fw-bold text-uppercase" style="letter-spacing: 0.5px;">Email Address</label>
+                <input type="email" id="loginEmail" class="form-control bg-light border-0 shadow-none py-2" placeholder="name@example.com" required>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label text-muted small fw-bold text-uppercase" style="letter-spacing: 0.5px;">Password</label>
+                <input type="password" id="loginPassword" class="form-control bg-light border-0 shadow-none py-2" placeholder="••••••••" required>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mb-4 small fw-medium">
+                <a href="#" class="text-muted text-decoration-none">Forgot password?</a>
+                <a href="signup.html" style="color: var(--accent-primary); text-decoration: none;">Create an account</a>
+            </div>
+
+            <button type="button" id="loginBtn" class="btn-gradient w-100 py-2 fs-6">Sign In</button>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="verificationModal" tabindex="-1" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bento-card border-0 text-center p-4">
+            <div class="mb-3 text-warning">
+                <i class="bi bi-envelope-exclamation" style="font-size: 3rem;"></i>
+            </div>
+            <h5 class="fw-bold" style="color: var(--bg-ocean);">Verify Your Email</h5>
+            <p class="text-muted small mt-2">
+                We've sent a verification link to:<br>
+                <strong id="verifyEmail" style="color: var(--accent-primary);"></strong>
+            </p>
+            <p class="text-muted small">Please check your inbox and verify before logging in.</p>
+            <button type="button" class="btn btn-light rounded-pill mt-3 w-100 fw-semibold" data-bs-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script type="module" src="auth-check.js"></script>
+</body>
+</html>

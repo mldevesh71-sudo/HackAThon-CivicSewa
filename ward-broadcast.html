@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CivicSewa Admin | Broadcasts</title>
+<link href="" rel="stylesheet">
+<link rel="stylesheet" href="">
+<link href="" rel="stylesheet">
+<link rel="stylesheet" href="css/global-glassmorphism.css">
+</head>
+
+<body>
+<div class="d-flex">
+<!-- ADMIN SIDEBAR -->
+<div id="sidebar" class="d-flex flex-column py-4" style="background-color: #011826;">
+<div class="sidebar-brand px-4 mb-4 text-warning">
+<div class="sidebar-brand-icon bg-warning"></div>
+CivicSewa <span class="ms-2 fs-6 text-white-50">Admin</span>
+</div>
+<ul class="nav nav-pills flex-column flex-grow-1 mt-2">
+<li class="nav-item"><a href="ward-dashboard.html" class="nav-link"><i class="bi bi-grid-1x2 me-3"></i> Overview</a></li>
+<li><a href="ward-complaints.html" class="nav-link"><i class="bi bi-list-check me-3"></i> Manage Complaints</a></li>
+<li><a href="ward-broadcast.html" class="nav-link active"><i class="bi bi-broadcast me-3"></i> Broadcast Channel</a></li>
+<li><a href="ward-settings.html" class="nav-link"><i class="bi bi-gear me-3"></i> Admin Settings</a></li>
+</ul>
+<div class="px-4 mt-auto">
+<button id="logoutBtn" class="btn btn-outline-light w-100" style="border-radius: 10px; font-weight: 500;">Sign Out</button>
+</div>
+</div>
+
+</div>
+
+<!-- CREATE BROADCAST MODAL -->
+<div class="modal fade" id="createModal" tabindex="-1">
+<div class="modal-dialog modal-dialog-centered">
+<div class="modal-content bento-card border-0 p-2">
+<div class="modal-header border-0 pb-0">
+<h5 class="modal-title fw-bold" style="color: var(--bg-ocean);">Publish Notice</h5>
+<button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
+</div>
+<div class="modal-body">
+<div class="mb-3">
+<label class="form-label text-muted small fw-bold text-uppercase">Notice Title</label>
+<input id="title" class="form-control bg-light border-0 shadow-none py-2" placeholder="e.g. Water Supply Interruption">
+</div>
+
+</div>
+
+<script src=""></script>
+<script type="module" src="js/ward/ward-broadcast.js"></script>
+</body>
+</html>
