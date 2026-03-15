@@ -10,7 +10,7 @@
     /* Obsidian Palette */
     --bg-base: #050507; 
     --text-main: #ffffff;
-    --text-muted: rgba(255, 255, 255, 0.65);
+    --text-muted: rgba(255, 255, 255, 0.75); /* Brightened for better dark mode contrast */
     
     /* Interaction Accent */
     --gold: #FFD700; 
@@ -19,7 +19,7 @@
     --glass: rgba(15, 15, 18, 0.4);
     --glass-border: rgba(255, 255, 255, 0.08);
     
-    /* Sidebar Scaling (Slimmed down to save space) */
+    /* Sidebar Scaling */
     --sidebar-width: 250px;
     --sidebar-collapsed-width: 80px;
 }
@@ -41,6 +41,15 @@ body {
     background-repeat: no-repeat;
 }
 
+/* --- BOOTSTRAP OVERRIDES (The Contrast Fix) --- */
+.text-muted {
+    color: var(--text-muted) !important;
+}
+
+.text-secondary {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
 /* --- THE AMBIENT GLOWS --- */
 .ambient-glow {
     position: fixed;
@@ -51,29 +60,9 @@ body {
     pointer-events: none;
 }
 
-.glow-1 { 
-    top: -10%; 
-    right: 10%; 
-    width: 50vw; 
-    height: 50vw; 
-    background: rgba(255, 255, 255, 0.1); 
-}
-
-.glow-2 { 
-    bottom: -20%; 
-    left: 15%; 
-    width: 40vw; 
-    height: 40vw; 
-    background: rgba(100, 110, 120, 0.15); 
-}
-
-.glow-3 { 
-    top: 40%; 
-    left: 40%; 
-    width: 30vw; 
-    height: 30vw; 
-    background: rgba(255, 215, 0, 0.05); 
-}
+.glow-1 { top: -10%; right: 10%; width: 50vw; height: 50vw; background: rgba(255, 255, 255, 0.1); }
+.glow-2 { bottom: -20%; left: 15%; width: 40vw; height: 40vw; background: rgba(100, 110, 120, 0.15); }
+.glow-3 { top: 40%; left: 40%; width: 30vw; height: 30vw; background: rgba(255, 215, 0, 0.05); }
 
 /* --- Universal Glass Component --- */
 .glass-box {
@@ -107,14 +96,11 @@ body {
     transition: width 0.3s ease, padding 0.3s ease;
     overflow-x: hidden;
     overflow-y: auto;
-    scrollbar-width: none; /* Hides scrollbar on Firefox */
+    scrollbar-width: none; 
     box-shadow: 5px 0 20px rgba(0,0,0,0.5);
 }
 
-/* Hides scrollbar on Chrome/Edge/Safari */
-#sidebar::-webkit-scrollbar { 
-    display: none; 
-}
+#sidebar::-webkit-scrollbar { display: none; }
 
 .sidebar-header {
     display: flex;
@@ -193,44 +179,23 @@ body.sidebar-collapsed #sidebar {
     width: var(--sidebar-collapsed-width); 
     padding: 1.2rem 0.5rem; 
 }
-
 body.sidebar-collapsed .main-wrapper { 
     margin-left: var(--sidebar-collapsed-width); 
     width: calc(100vw - var(--sidebar-collapsed-width)); 
 }
-
 body.sidebar-collapsed .nav-text, 
-body.sidebar-collapsed .logo-wrap span { 
-    display: none; 
-}
-
-body.sidebar-collapsed .sidebar-header { 
-    justify-content: center; 
-}
-
-/* Hide hamburger when collapsed so only gold logo shows */
-body.sidebar-collapsed #sidebarToggle { 
-    display: none !important; 
-}
-
+body.sidebar-collapsed .logo-wrap span { display: none; }
+body.sidebar-collapsed .sidebar-header { justify-content: center; }
+body.sidebar-collapsed #sidebarToggle { display: none !important; }
 body.sidebar-collapsed .nav-link, 
-body.sidebar-collapsed .sign-out-btn { 
-    justify-content: center; 
-    padding: 12px 0; 
-    border-left: none; 
-}
-
+body.sidebar-collapsed .sign-out-btn { justify-content: center; padding: 12px 0; border-left: none; }
 body.sidebar-collapsed .nav-link i, 
-body.sidebar-collapsed .sign-out-btn i { 
-    margin: 0; 
-    font-size: 1.3rem; 
-}
+body.sidebar-collapsed .sign-out-btn i { margin: 0; font-size: 1.3rem; }
 
 /* --- Main Content Area --- */
 .main-wrapper {
     margin-left: var(--sidebar-width);
     width: calc(100vw - var(--sidebar-width)); 
-    /* Tightened padding to pull everything up and left */
     padding: 1rem 2rem;
     transition: margin-left 0.3s ease, width 0.3s ease;
     box-sizing: border-box; 
@@ -267,6 +232,10 @@ body.sidebar-collapsed .sign-out-btn i {
     font-size: 0.9rem;
 }
 
+.search-container input::placeholder {
+    color: var(--text-muted); /* Ensures placeholder is visible in dark mode */
+}
+
 .profile-section { 
     display: flex; 
     align-items: center; 
@@ -277,16 +246,13 @@ body.sidebar-collapsed .sign-out-btn i {
 /* --- Anti-Overlap Grid Engine --- */
 .content-layout {
     display: grid;
-    /* Tightened gap and slimmed right panel to prevent overflow */
     grid-template-columns: 1fr 310px; 
     gap: 1.5rem;
     align-items: start; 
 }
 
 @media (max-width: 1300px) {
-    .content-layout { 
-        grid-template-columns: 1fr; 
-    }
+    .content-layout { grid-template-columns: 1fr; }
 }
 
 .greeting-title { 
@@ -303,7 +269,6 @@ body.sidebar-collapsed .sign-out-btn i {
 }
 
 .grid-card {
-    /* Fixed sleek height instead of massive squares */
     min-height: 115px; 
     display: flex; 
     flex-direction: column; 
@@ -321,69 +286,21 @@ body.sidebar-collapsed .sign-out-btn i {
     border-color: rgba(255,255,255,0.3);
 }
 
-.grid-icon { 
-    font-size: 1.8rem; 
-    margin-bottom: 0.4rem; 
-    /* Uses dynamic variable so it flips to black in light mode */
-    color: var(--text-main); 
-}
-
-.grid-title { 
-    font-size: 0.85rem; 
-    font-weight: 600; 
-    line-height: 1.2; 
-}
-
-.grid-subtitle { 
-    font-size: 0.7rem; 
-    color: var(--text-muted); 
-    margin-top: 0.4rem; 
-    line-height: 1.2; 
-}
+.grid-icon { font-size: 1.8rem; margin-bottom: 0.4rem; color: var(--text-main); }
+.grid-title { font-size: 0.85rem; font-weight: 600; line-height: 1.2; }
+.grid-subtitle { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.4rem; line-height: 1.2; }
 
 /* Icon Colors */
-.icon-gold { 
-    color: var(--gold); 
-    filter: drop-shadow(0 0 8px rgba(255,215,0,0.5)); 
-}
-
-.icon-news { 
-    color: var(--text-muted); 
-}
-
-.icon-weather { 
-    color: var(--text-muted); 
-}
-
-.icon-air { 
-    color: #0dcaf0; 
-}
+.icon-gold { color: var(--gold); filter: drop-shadow(0 0 8px rgba(255,215,0,0.5)); }
+.icon-news { color: var(--text-muted); }
+.icon-weather { color: var(--text-muted); }
+.icon-air { color: #0dcaf0; }
 
 /* --- Right Sidebar Panels --- */
-.right-panels { 
-    display: flex; 
-    flex-direction: column; 
-    gap: 1rem; 
-    width: 100%; 
-}
-
-.panel-block { 
-    padding: 1.2rem; 
-}
-
-.panel-heading { 
-    font-size: 0.95rem; 
-    font-weight: 600; 
-    margin-bottom: 0.8rem; 
-    color: var(--text-main); 
-}
-
-.bullet-list { 
-    padding-left: 1.2rem; 
-    margin-bottom: 1rem; 
-    color: var(--text-muted); 
-    font-size: 0.85rem; 
-}
+.right-panels { display: flex; flex-direction: column; gap: 1rem; width: 100%; }
+.panel-block { padding: 1.2rem; }
+.panel-heading { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.8rem; color: var(--text-main); }
+.bullet-list { padding-left: 1.2rem; margin-bottom: 1rem; color: var(--text-muted); font-size: 0.85rem; }
 
 .emergency-btn {
     background: rgba(0, 0, 0, 0.5); 
@@ -396,36 +313,11 @@ body.sidebar-collapsed .sign-out-btn i {
     margin-bottom: 8px;
 }
 
-.em-icon { 
-    width: 32px; 
-    height: 32px; 
-    border-radius: 6px; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    font-size: 1.1rem; 
-}
-
-.em-police { 
-    background: rgba(13, 110, 253, 0.2); 
-    color: #8ab4f8; 
-}
-
-.em-fire { 
-    background: rgba(220, 53, 69, 0.2); 
-    color: #f28b82; 
-}
-
-.em-ambulance { 
-    background: rgba(25, 135, 84, 0.2); 
-    color: #81c995; 
-}
-
-.em-text {
-    font-size: 0.8rem;
-    line-height: 1.3;
-    color: var(--text-main);
-}
+.em-icon { width: 32px; height: 32px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+.em-police { background: rgba(13, 110, 253, 0.2); color: #8ab4f8; }
+.em-fire { background: rgba(220, 53, 69, 0.2); color: #f28b82; }
+.em-ambulance { background: rgba(25, 135, 84, 0.2); color: #81c995; }
+.em-text { font-size: 0.8rem; line-height: 1.3; color: var(--text-main); }
 
 /* --- Modals --- */
 .glass-modal .modal-content {
@@ -449,19 +341,10 @@ body.sidebar-collapsed .sign-out-btn i {
     margin-right: 8px;
 }
 
-.theme-slider input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
+.theme-slider input { opacity: 0; width: 0; height: 0; }
 
 .slider-pill {
-    position: absolute;
-    cursor: pointer;
-    top: 0; 
-    left: 0; 
-    right: 0; 
-    bottom: 0;
+    position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
     background-color: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 22px;
@@ -469,23 +352,14 @@ body.sidebar-collapsed .sign-out-btn i {
 }
 
 .slider-pill:before {
-    position: absolute;
-    content: "";
-    height: 14px;
-    width: 14px;
-    left: 3px;
-    bottom: 3px;
-    background-color: var(--text-main);
-    border-radius: 50%;
+    position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px;
+    background-color: var(--text-main); border-radius: 50%;
     transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     box-shadow: 0 2px 5px rgba(0,0,0,0.3);
 }
 
-input:checked + .slider-pill:before {
-    transform: translateX(20px);
-}
+input:checked + .slider-pill:before { transform: translateX(20px); }
 
-/* Light Theme States for the Slider */
 body.light-theme .slider-pill {
     background-color: rgba(0, 0, 0, 0.1);
     border-color: rgba(0, 0, 0, 0.2);
@@ -493,85 +367,40 @@ body.light-theme .slider-pill {
 
 /* =========================================
    GLOBAL LIGHT THEME OVERRIDES
-   Activates when <body class="light-theme">
 ========================================= */
 
 body.light-theme {
-    /* 1. Invert the core palette */
     --bg-base: #f4f7f6;
     --text-main: #1a1c20;
     --text-muted: rgba(0, 0, 0, 0.7);
     --gold: #b8860b; 
-    
-    /* 2. Invert the Glassmorphism to Frosted White */
     --glass: rgba(255, 255, 255, 0.75);
     --glass-border: rgba(0, 0, 0, 0.08);
-
-    /* 3. The Background Trick: Add a heavy white wash over the dark topography */
     background-image: linear-gradient(rgba(244, 247, 246, 0.92), rgba(244, 247, 246, 0.92)), url('../assets/img/background.jpeg');
 }
 
+/* Light Theme Bootstrap Overrides */
+body.light-theme .text-muted { color: rgba(0, 0, 0, 0.7) !important; }
+body.light-theme .text-secondary { color: rgba(0, 0, 0, 0.6) !important; }
+body.light-theme .search-container input::placeholder { color: rgba(0, 0, 0, 0.5); }
+
 /* Sidebar Specific Overrides */
-body.light-theme #sidebar {
-    background: rgba(255, 255, 255, 0.85);
-    box-shadow: 5px 0 20px rgba(0,0,0,0.05);
-}
-
-body.light-theme .logo-wrap { 
-    color: var(--text-main); 
-}
-
-body.light-theme .nav-link.active {
-    background: linear-gradient(90deg, rgba(184, 134, 11, 0.1) 0%, transparent 100%);
-}
+body.light-theme #sidebar { background: rgba(255, 255, 255, 0.85); box-shadow: 5px 0 20px rgba(0,0,0,0.05); }
+body.light-theme .logo-wrap { color: var(--text-main); }
+body.light-theme .nav-link.active { background: linear-gradient(90deg, rgba(184, 134, 11, 0.1) 0%, transparent 100%); }
 
 /* Navbar Specific Overrides */
-body.light-theme .search-container {
-    background: rgba(255, 255, 255, 0.6);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-body.light-theme .search-container input { 
-    color: var(--text-main); 
-}
-
-body.light-theme .search-container input::placeholder { 
-    color: rgba(0,0,0,0.5); 
-}
-
-body.light-theme select { 
-    background: rgba(255, 255, 255, 0.7) !important; 
-    color: var(--text-main) !important; 
-    border-color: rgba(0,0,0,0.1) !important; 
-}
-
-body.light-theme select option { 
-    background: #fff !important; 
-    color: #000 !important; 
-}
+body.light-theme .search-container { background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(0, 0, 0, 0.1); }
+body.light-theme .search-container input { color: var(--text-main); }
+body.light-theme select { background: rgba(255, 255, 255, 0.7) !important; color: var(--text-main) !important; border-color: rgba(0,0,0,0.1) !important; }
+body.light-theme select option { background: #fff !important; color: #000 !important; }
 
 /* Force Bootstrap Text Colors to Flip */
-body.light-theme .text-white { 
-    color: var(--text-main) !important; 
-}
-
-body.light-theme .text-light { 
-    color: #444 !important; 
-}
-
-body.light-theme .bg-dark { 
-    background-color: rgba(0,0,0,0.05) !important; 
-}
+body.light-theme .text-white { color: var(--text-main) !important; }
+body.light-theme .text-light { color: #444 !important; }
+body.light-theme .bg-dark { background-color: rgba(0,0,0,0.05) !important; }
 
 /* Ambient Glow Adjustment for Light Mode */
-body.light-theme .glow-1 { 
-    background: rgba(0, 100, 255, 0.1); 
-}
-
-body.light-theme .glow-2 { 
-    background: rgba(200, 100, 0, 0.1); 
-}
-
-body.light-theme .glow-3 { 
-    background: transparent; 
-}
+body.light-theme .glow-1 { background: rgba(0, 100, 255, 0.1); }
+body.light-theme .glow-2 { background: rgba(200, 100, 0, 0.1); }
+body.light-theme .glow-3 { background: transparent; }
