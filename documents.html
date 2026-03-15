@@ -134,6 +134,12 @@
             </div>
             
             <div class="profile-section">
+
+                 <label class="theme-slider" title="Toggle Light/Dark Mode">
+                    <input type="checkbox" id="themeToggle">
+                    <span class="slider-pill"></span>
+                </label> 
+                
                 <select id="languageSelect" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 8px; padding: 6px 12px; cursor: pointer; outline: none;">
                     <option value="en" style="background: #110d20;">English</option>
                     <option value="np" style="background: #110d20;">नेपाली</option>
@@ -392,6 +398,29 @@
                 console.error(err); alert("Sign out failed."); this.disabled = false; this.innerHTML = 'Sign Out';
             });
         });
+    </script>
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+
+        // 1. Check LocalStorage on load
+        if (localStorage.getItem('civicsewa_theme') === 'light') {
+            body.classList.add('light-theme');
+            if (themeToggle) themeToggle.checked = true;
+        }
+
+        // 2. Toggle event listener
+        if (themeToggle) {
+            themeToggle.addEventListener('change', function() {
+                if (this.checked) {
+                    body.classList.add('light-theme');
+                    localStorage.setItem('civicsewa_theme', 'light');
+                } else {
+                    body.classList.remove('light-theme');
+                    localStorage.setItem('civicsewa_theme', 'dark');
+                }
+            });
+        }
     </script>
 
 </body>

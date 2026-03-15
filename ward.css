@@ -1,14 +1,95 @@
-/* css/color-mode.css */
-body.dark-theme {
-    --bg-light: #070b14;
-    --card-bg: #111827;
-    --text-main: #f8fafc;
-    --text-muted: #94a3b8;
-    --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.5);
-    border-color: rgba(255,255,255,0.05);
+/* =========================================
+   CIVICSEWA - WARD / ADMIN SPECIFIC STYLES
+========================================= */
+
+/* Dark Glass Inputs for Admin Forms */
+.admin-input {
+    background: rgba(0, 0, 0, 0.4) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: white !important;
 }
 
-body.dark-theme .top-navbar {
-    background: rgba(17, 24, 39, 0.8);
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+.admin-input:focus {
+    background: rgba(0, 0, 0, 0.6) !important;
+    border-color: var(--gold) !important;
+    box-shadow: 0 0 0 0.25rem rgba(255, 215, 0, 0.25) !important;
+}
+
+/* Scrollable Log Panels */
+.scrollable-panel {
+    max-height: 350px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.2) transparent;
+}
+
+/* Dashboard Emergency Item (Small) */
+.emergency-item {
+    border-left: 4px solid #dc3545;
+    background: rgba(220, 53, 69, 0.1);
+    padding: 12px;
+    border-radius: 0 8px 8px 0;
+    margin-bottom: 10px;
+}
+
+/* Broadcast & Complaint Cards */
+.broadcast-card, .complaint-card {
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Edge Indicators for Cards */
+.broadcast-card.emergency-card::before,
+.complaint-card.high-priority::after {
+    content: '';
+    position: absolute; 
+    top: 0; 
+    bottom: 0; 
+    width: 6px;
+}
+
+.broadcast-card.emergency-card::before { left: 0; background-color: #dc3545; }
+.broadcast-card.strike-card::before { left: 0; background-color: #ffc107; }
+.complaint-card.high-priority::after { 
+    right: 0; 
+    background-color: #dc3545; 
+    box-shadow: -2px 0 10px rgba(220, 53, 69, 0.5); 
+}
+
+/* Delete Button Positioning */
+.delete-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 10;
+}
+
+/* Photo Thumbnails for Complaints */
+.photo-thumbnail {
+    width: 60px; 
+    height: 60px; 
+    object-fit: cover; 
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.2); 
+    cursor: pointer; 
+    transition: 0.2s;
+}
+
+.photo-thumbnail:hover { 
+    filter: brightness(1.2); 
+    border-color: var(--gold); 
+}
+
+/* Map Overrides for Dark UI */
+#modalMap { 
+    height: 220px; 
+    border-radius: 12px; 
+    border: 1px solid rgba(255,255,255,0.1); 
+    margin-bottom: 10px; 
+    z-index: 1; 
+    filter: brightness(0.9); 
 }

@@ -2,263 +2,275 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>CivicSewa | Ward Command Center</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CivicSewa - Ward Control Panel</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     
+    <link rel="stylesheet" href="../../css/base.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="css/global-glassmorphism.css">
 
     <style>
-        /* Admin specific overrides */
-        .kpi-card {
-            border-radius: 20px;
-            padding: 24px;
-            text-align: center;
-            box-shadow: var(--shadow-soft);
-            transition: transform var(--transition-fast);
-            color: white;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid var(--glass-border);
+        /* Admin Specific Overrides */
+        .admin-input {
+            background: rgba(0, 0, 0, 0.4) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: white !important;
         }
-        .kpi-card:hover { transform: translateY(-5px); }
-        .kpi-card::after {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
-            pointer-events: none;
+        .admin-input:focus {
+            background: rgba(0, 0, 0, 0.6) !important;
+            border-color: var(--gold) !important;
+            box-shadow: 0 0 0 0.25rem rgba(255, 215, 0, 0.25) !important;
         }
-
-        .kpi-open { background: linear-gradient(135deg, var(--accent-primary), #004D74); }
-        .kpi-resolved { background: linear-gradient(135deg, var(--accent-success), #047857); }
-        .kpi-progress { background: linear-gradient(135deg, var(--accent-warn), #b45309); }
-        .kpi-high { background: linear-gradient(135deg, var(--accent-alert), #b91c1c); }
-
-        .kpi-card h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 5px; color: white !important; }
-        .kpi-card p { font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin: 0; color: rgba(255,255,255,0.8) !important; }
-
-        /* Scrollable Lists */
-        .scroll-list { max-height: 280px; overflow-y: auto; padding-right: 5px; }
-
-        /* Update Items */
-        .update-item {
-            padding: 14px;
-            margin-bottom: 12px;
-            border-radius: 12px;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--glass-border);
-            border-left: 4px solid transparent;
-            transition: var(--transition-fast);
+        .emergency-item {
+            border-left: 4px solid #dc3545;
+            background: rgba(220, 53, 69, 0.1);
+            padding: 12px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 10px;
         }
-        .update-item:hover { background: rgba(255,255,255,0.08); transform: translateX(3px); }
-        .update-water { border-left-color: var(--accent-primary); }
-        .update-road { border-left-color: var(--accent-alert); }
-        .update-waste { border-left-color: var(--accent-success); }
+        .scrollable-panel {
+            max-height: 350px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255,255,255,0.2) transparent;
+        }
     </style>
 </head>
-
 <body>
 
-<div class="bg-grid"></div>
-<div class="parallax-layer" id="parallax">
-    <div class="mesh-orb orb-1"></div>
-    <div class="mesh-orb orb-2"></div>
-</div>
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
 
-<div class="d-flex">
-    <div id="sidebar" class="d-flex flex-column py-4" style="background-color: rgba(1, 24, 38, 0.8);">
-        <div class="sidebar-brand px-4 mb-4 text-warning">
-            <div class="sidebar-brand-icon bg-warning shadow-none" style="background: var(--accent-warn) !important;"></div>
-            CivicSewa <span class="ms-2 fs-6 text-white-50 fw-normal">Admin</span>
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-wrap">
+                <i class="bi bi-buildings-fill"></i> 
+                <span class="nav-text">CivicSewa <span class="text-warning ms-1" style="font-size: 0.7rem;">ADMIN</span></span>
+            </div>
+            <i class="bi bi-list fs-3 text-secondary" id="sidebarToggle" style="cursor: pointer;"></i>
         </div>
-        <ul class="nav nav-pills flex-column flex-grow-1 mt-2">
-            <li class="nav-item"><a href="ward-dashboard.html" class="nav-link active"><i class="bi bi-grid-1x2 me-3"></i> Overview</a></li>
-            <li><a href="ward-complaints.html" class="nav-link"><i class="bi bi-list-check me-3"></i> Manage Complaints</a></li>
-            <li><a href="ward-broadcast.html" class="nav-link"><i class="bi bi-broadcast me-3"></i> Broadcast Channel</a></li>
-            <li><a href="ward-settings.html" class="nav-link"><i class="bi bi-gear me-3"></i> Admin Settings</a></li>
-        </ul>
-        <div class="px-4 mt-auto">
-            <button id="logoutBtn" class="btn btn-outline-light w-100" style="border-radius: 10px; font-weight: 500;">Sign Out</button>
-        </div>
-    </div>
-
-    <div class="main-content flex-grow-1">
         
-        <nav class="top-navbar d-flex align-items-center justify-content-between border-bottom">
-            <div class="fw-bold text-muted text-uppercase d-flex align-items-center" style="letter-spacing: 1px;">
-                <i class="bi bi-shield-lock-fill text-warning me-2 fs-5"></i> Command Center
-            </div>
-            <div class="d-flex align-items-center">
-                <div class="input-group me-4" style="width: 250px;">
-                    <span class="input-group-text bg-light border-0"><i class="bi bi-search text-muted"></i></span>
-                    <input type="text" class="form-control bg-light border-0 shadow-none" placeholder="Search ID...">
-                </div>
-                <span class="badge rounded-pill me-3 bg-warning text-dark px-3 py-2" id="uWard">Ward --</span>
-                <strong id="uNameTop" style="color: white;">Admin User</strong>
-            </div>
-        </nav>
+        <a href="ward-dashboard.html" class="nav-link active"><i class="bi bi-grid-1x2"></i> <span class="nav-text">Control Panel</span></a>
+        <a href="ward-complaints.html" class="nav-link"><i class="bi bi-inboxes"></i> <span class="nav-text">Ward Complaints</span></a>
+        <a href="ward-broadcast.html" class="nav-link"><i class="bi bi-broadcast"></i> <span class="nav-text">Broadcast Log</span></a>
+        <a href="ward-settings.html" class="nav-link"><i class="bi bi-gear"></i> <span class="nav-text">Settings</span></a>
+        
+        <button id="logoutBtn" class="sign-out-btn w-100 border-0 mt-auto">
+            <i class="bi bi-box-arrow-right"></i> <span class="nav-text">Sign Out</span>
+        </button>
+    </nav>
 
-        <div class="container-fluid p-4 p-md-5">
+    <main class="main-wrapper">
+        
+        <header class="top-nav">
+            <div class="search-container">
+                <i class="bi bi-search text-secondary"></i>
+                <input type="text" placeholder="Search records...">
+            </div>
             
-            <div class="row g-4 mb-4">
-                <div class="col-md-3">
-                    <div class="kpi-card kpi-open">
-                        <h2 id="kpiOpen">128</h2>
-                        <p>Open Tickets</p>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="kpi-card kpi-resolved">
-                        <h2 id="kpiResolved">86</h2>
-                        <p>Resolved (30d)</p>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="kpi-card kpi-progress">
-                        <h2 id="kpiProgress">32</h2>
-                        <p>In Progress</p>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="kpi-card kpi-high">
-                        <h2 id="kpiHigh">14</h2>
-                        <p>High Priority</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row g-4 mb-4">
+            <div class="profile-section">
+                <label class="theme-slider" title="Toggle Light/Dark Mode">
+                    <input type="checkbox" id="themeToggle">
+                    <span class="slider-pill"></span>
+                </label>
                 
-                <div class="col-lg-5">
-                    <div class="bento-card h-100">
-                        <h5 class="fw-bold mb-4">Status Distribution</h5>
-                        <div style="height:250px; position: relative;">
-                            <canvas id="pieChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-7">
-                    <div class="bento-card h-100 premium-card">
-                        <div class="bento-inner">
-                            <h5 class="fw-bold mb-4 d-flex align-items-center gap-2">
-                                <i class="bi bi-broadcast text-light"></i> Quick Dispatch Alert
-                            </h5>
-                            <form id="quickAlertForm">
-                                <div class="row g-3 mb-3">
-                                    <div class="col-md-7">
-                                        <input type="text" id="alertTitle" class="form-control" placeholder="Alert Title" required>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <select id="alertCategory" class="form-select">
-                                            <option value="Water">Water Dept</option>
-                                            <option value="Road">Road Dept</option>
-                                            <option value="Waste">Sanitation</option>
-                                            <option value="Electricity">Electricity</option>
-                                            <option value="General" selected>General Info</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <textarea id="alertDescription" class="form-control mb-3" rows="3" placeholder="Message details..." required></textarea>
-                                
-                                <div class="d-flex justify-content-between align-items-center mt-3">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="alertEmergency">
-                                        <label class="form-check-label text-danger fw-bold ms-2" for="alertEmergency"><i class="bi bi-exclamation-triangle-fill me-1"></i>MARK EMERGENCY</label>
-                                    </div>
-                                    <button type="button" id="postBtn" class="btn-gradient rounded-pill px-4">Dispatch Alert</button>
-                                </div>
-                            </form>
-                        </div>
+                <div class="user-info ps-3 border-start border-secondary">
+                    <div style="line-height: 1.3;">
+                        <div class="fw-bold text-end" style="font-size: 0.95rem;"><span id="uNameTop">Loading...</span></div>
+                        <div class="text-warning text-end" style="font-size: 0.85rem;" id="uWard">Ward --</div>
                     </div>
                 </div>
             </div>
+        </header>
 
-            <div class="row g-4">
-                <div class="col-lg-6">
-                    <div class="bento-card h-100">
-                        <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h5 class="fw-bold m-0">Incoming Tickets</h5>
-                            <a href="ward-complaints.html" class="btn btn-sm btn-light rounded-pill px-3">View All</a>
-                        </div>
-                        
-                        <div id="complaintsContainer" class="scroll-list">
-                            <div class="update-item" style="border-left-color: var(--accent-light);">
-                                <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <strong class="text-white">Pothole on Main St.</strong>
-                                    <span class="badge bg-primary">New</span>
-                                </div>
-                                <div class="small text-muted">Reported by Aayush • 10 mins ago</div>
-                            </div>
-                        </div>
-                    </div>
+        <h1 class="greeting-title">
+            Ward Overview, <span id="uNameMain" class="text-warning">Official</span>
+        </h1>
+
+        <div class="row g-3 mb-4">
+            <div class="col-md-3">
+                <div class="glass-box p-3 text-center border-start border-4 border-primary">
+                    <h2 class="fw-bold mb-1" id="kpiOpen">--</h2>
+                    <div class="text-muted small text-uppercase">Open Issues</div>
                 </div>
-
-                <div class="col-lg-6">
-                    <div class="bento-card h-100">
-                        <h5 class="fw-bold mb-4">Active Ward Notices</h5>
-                        
-                        <div class="scroll-list">
-                            <div class="update-item update-water">
-                                <div class="mb-1"><span class="badge bg-primary me-2">Water</span> <span class="text-white fw-medium">Pipeline repair scheduled for Friday.</span></div>
-                                <small class="text-muted">Dispatched 2 hours ago</small>
-                            </div>
-                            <div class="update-item update-road" style="background: rgba(239, 68, 68, 0.05);">
-                                <div class="mb-1"><span class="badge bg-danger me-2">EMERGENCY</span> <span class="text-danger fw-bold">Landslide blocking Ring Road.</span></div>
-                                <small class="text-muted">Dispatched 5 hours ago</small>
-                            </div>
-                            <div class="update-item update-waste">
-                                <div class="mb-1"><span class="badge bg-success me-2">Waste</span> <span class="text-white fw-medium">Holiday collection schedule updated.</span></div>
-                                <small class="text-muted">Dispatched yesterday</small>
-                            </div>
-                        </div>
-                    </div>
+            </div>
+            <div class="col-md-3">
+                <div class="glass-box p-3 text-center border-start border-4 border-warning">
+                    <h2 class="fw-bold mb-1" id="kpiProg">--</h2>
+                    <div class="text-muted small text-uppercase">In Progress</div>
                 </div>
-
+            </div>
+            <div class="col-md-3">
+                <div class="glass-box p-3 text-center border-start border-4 border-success">
+                    <h2 class="fw-bold mb-1" id="kpiRes">--</h2>
+                    <div class="text-muted small text-uppercase">Resolved</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="glass-box p-3 text-center border-start border-4 border-info">
+                    <h2 class="fw-bold mb-1" id="kpiTotal">--</h2>
+                    <div class="text-muted small text-uppercase">Total Complaints</div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
 
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-    const ctx = document.getElementById('pieChart').getContext('2d');
-    new Chart(ctx, {
-        type: 'doughnut', // Doughnut looks more premium than standard pie
-        data: {
-            labels: ['Open', 'In Progress', 'Resolved'],
-            datasets: [{
-                data: [128, 32, 86],
-                backgroundColor: [
-                    '#006DA4', // Primary
-                    '#f59e0b', // Warn
-                    '#10b981'  // Success
-                ],
-                borderWidth: 0, // Removes the ugly white borders
-                hoverOffset: 4
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            cutout: '70%', // Thickness of the ring
-            plugins: {
-                legend: {
-                    position: 'right',
-                    labels: { color: '#ffffff', font: { family: "'Inter', sans-serif", size: 13 } }
-                }
-            }
+        <div class="row g-4">
+            
+            <div class="col-lg-8">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="glass-box p-4 h-100">
+                            <h6 class="fw-bold mb-3 text-light">Status Analytics</h6>
+                            <div style="height: 220px; position: relative;">
+                                <canvas id="pieChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="glass-box p-4 h-100">
+                            <h6 class="fw-bold mb-3 text-danger"><i class="bi bi-exclamation-triangle-fill me-2"></i>Active Emergencies</h6>
+                            <div class="scrollable-panel" style="max-height: 220px;">
+                                <div class="emergency-item">
+                                    <div class="fw-bold text-danger small mb-1">ROAD BLOCKED</div>
+                                    <div class="small text-light">Landslide cleared near Tole-3 junction. Teams deployed.</div>
+                                </div>
+                                <div class="emergency-item">
+                                    <div class="fw-bold text-danger small mb-1">WATER CRISIS</div>
+                                    <div class="small text-light">Main pipeline burst near Ward-5 boundary.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="glass-box p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="fw-bold text-light mb-0">Incoming Complaints Log</h6>
+                                <a href="ward-complaints.html" class="btn btn-sm btn-outline-light" style="font-size: 0.8rem;">View All</a>
+                            </div>
+                            <div id="complaintsContainer" class="scrollable-panel">
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="glass-box p-4 h-100 d-flex flex-column">
+                    <h6 class="fw-bold mb-4 text-warning"><i class="bi bi-broadcast me-2"></i>Ward Broadcast Terminal</h6>
+                    
+                    <form class="flex-grow-1 d-flex flex-column">
+                        <div class="mb-3">
+                            <label class="form-label small text-muted">Alert Title</label>
+                            <input type="text" id="alertTitle" class="form-control admin-input" placeholder="e.g. Pipeline Repair Notice">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label small text-muted">Category</label>
+                            <select id="alertCategory" class="form-select admin-input">
+                                <option style="background: #110d20;">Water & Sanitation</option>
+                                <option style="background: #110d20;">Roads & Transport</option>
+                                <option style="background: #110d20;">Waste Management</option>
+                                <option style="background: #110d20;">Electricity</option>
+                                <option style="background: #110d20;">General Announcement</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3 flex-grow-1">
+                            <label class="form-label small text-muted">Message Details</label>
+                            <textarea id="alertDescription" class="form-control admin-input h-100" style="min-height: 120px;" placeholder="Enter details for the citizens..."></textarea>
+                        </div>
+                        
+                        <div class="form-check mb-4 mt-2">
+                            <input class="form-check-input" type="checkbox" id="alertEmergency" style="background-color: transparent; border-color: rgba(255,255,255,0.3);">
+                            <label class="form-check-label text-danger fw-bold small" for="alertEmergency">
+                                Tag as Critical Emergency
+                            </label>
+                        </div>
+                        
+                        <button type="button" id="postBtn" class="btn btn-warning w-100 fw-bold mt-auto">Transmit Broadcast</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const body = document.body;
+            const sidebar = document.getElementById('sidebar');
+            sidebar.addEventListener('click', (e) => {
+                const isToggle = e.target.closest('#sidebarToggle');
+                const isLogo = e.target.closest('.logo-wrap');
+                if (isToggle) { body.classList.add('sidebar-collapsed'); } 
+                else if (isLogo && body.classList.contains('sidebar-collapsed')) { body.classList.remove('sidebar-collapsed'); }
+            });
+        });
+    </script>
+
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        if (localStorage.getItem('civicsewa_theme') === 'light') {
+            body.classList.add('light-theme');
+            if (themeToggle) themeToggle.checked = true;
         }
-    });
-});
-</script>
+        if (themeToggle) {
+            themeToggle.addEventListener('change', function() {
+                if (this.checked) {
+                    body.classList.add('light-theme');
+                    localStorage.setItem('civicsewa_theme', 'light');
+                } else {
+                    body.classList.remove('light-theme');
+                    localStorage.setItem('civicsewa_theme', 'dark');
+                }
+                // Trigger chart re-render for color swap if needed
+                window.dispatchEvent(new Event('resize')); 
+            });
+        }
+    </script>
 
-<script type="module" src="js/ward/ward-dashboard.js"></script>
+    <script>
+        let myChart = null;
 
+        // Make Chart.js global text white by default to match Obsidian
+        Chart.defaults.color = 'rgba(255, 255, 255, 0.7)';
+
+        function updateChart(open, prog, res) {
+            const ctx = document.getElementById('pieChart').getContext('2d');
+            
+            if (myChart) { myChart.destroy(); } // Destroy old chart before re-drawing
+
+            myChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Open', 'In Progress', 'Resolved'],
+                    datasets: [{
+                        data: [open, prog, res],
+                        backgroundColor: ['#0d6efd', '#ffc107', '#198754'],
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    },
+                    cutout: '70%' // Makes it a sleek ring
+                }
+            });
+        }
+        
+        // Expose updateChart to global scope so ward-dashboard.js can call it
+        window.updateChart = updateChart;
+    </script>
+
+    <script type="module" src="../../js/ward/ward-dashboard.js"></script>
 </body>
 </html>

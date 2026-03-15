@@ -3,67 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CivicSewa | Sign In</title>
+    <title>CivicSewa - Secure Login</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/global-glassmorphism.css">
-    <link rel="stylesheet" href="css/auth.css">
+    
+    <link rel="stylesheet" href="css/base.css">
+
+    <style>
+        .auth-wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+            z-index: 10;
+        }
+        .auth-card {
+            width: 100%;
+            max-width: 420px;
+            padding: 2.5rem;
+        }
+        .admin-input {
+            background: rgba(0, 0, 0, 0.4) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: white !important;
+            padding: 12px 15px;
+        }
+        .admin-input:focus {
+            background: rgba(0, 0, 0, 0.6) !important;
+            border-color: var(--gold) !important;
+            box-shadow: 0 0 0 0.25rem rgba(255, 215, 0, 0.25) !important;
+        }
+        .input-group-text.admin-input {
+            background: rgba(0, 0, 0, 0.5) !important;
+            border-right: none !important;
+        }
+        .form-control.admin-input {
+            border-left: none !important;
+        }
+    </style>
 </head>
 <body>
 
-<a href="index.html" class="position-absolute top-0 start-0 m-4 text-decoration-none text-muted fw-semibold d-flex align-items-center gap-2" style="z-index: 100;">
-    <i class="bi bi-arrow-left"></i> Back to Home
-</a>
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
 
-<div class="auth-container w-100">
-    <div class="auth-card bento-card mx-3">
-        <div class="text-center mb-4">
-            <h2 class="logo-title" style="font-weight: 800; color: var(--bg-ocean); letter-spacing: -1px;">
-                Civic<span style="color: var(--accent-light);">Sewa</span>
-            </h2>
-            <p class="text-muted small fw-medium mt-2">Sign in to your digital civic portal</p>
-        </div>
-
-        <form>
-            <div class="mb-3">
-                <label class="form-label text-muted small fw-bold text-uppercase" style="letter-spacing: 0.5px;">Email Address</label>
-                <input type="email" id="loginEmail" class="form-control bg-light border-0 shadow-none py-2" placeholder="name@example.com" required>
-            </div>
-
-            <div class="mb-4">
-                <label class="form-label text-muted small fw-bold text-uppercase" style="letter-spacing: 0.5px;">Password</label>
-                <input type="password" id="loginPassword" class="form-control bg-light border-0 shadow-none py-2" placeholder="••••••••" required>
-            </div>
-
-            <div class="d-flex justify-content-between align-items-center mb-4 small fw-medium">
-                <a href="#" class="text-muted text-decoration-none">Forgot password?</a>
-                <a href="signup.html" style="color: var(--accent-primary); text-decoration: none;">Create an account</a>
-            </div>
-
-            <button type="button" id="loginBtn" class="btn-gradient w-100 py-2 fs-6">Sign In</button>
-        </form>
+    <div class="position-absolute top-0 start-0 w-100 p-4 d-flex justify-content-between align-items-center" style="z-index: 100;">
+        <a href="index.html" class="text-decoration-none text-muted fw-semibold d-flex align-items-center gap-2 hover-gold" style="transition: 0.2s;">
+            <i class="bi bi-arrow-left"></i> Back to Home
+        </a>
+        <label class="theme-slider" title="Toggle Light/Dark Mode">
+            <input type="checkbox" id="themeToggle">
+            <span class="slider-pill"></span>
+        </label>
     </div>
-</div>
 
-<div class="modal fade" id="verificationModal" tabindex="-1" data-bs-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content bento-card border-0 text-center p-4">
-            <div class="mb-3 text-warning">
-                <i class="bi bi-envelope-exclamation" style="font-size: 3rem;"></i>
+    <div class="auth-wrapper">
+        <div class="glass-box auth-card shadow-lg">
+            
+            <div class="text-center mb-4 logo-wrap justify-content-center" style="font-size: 2rem;">
+                <i class="bi bi-buildings-fill text-warning"></i> 
+                <span class="nav-text ms-2 fw-bold text-light">Civic<span class="text-warning">Sewa</span></span>
             </div>
-            <h5 class="fw-bold" style="color: var(--bg-ocean);">Verify Your Email</h5>
-            <p class="text-muted small mt-2">
-                We've sent a verification link to:<br>
-                <strong id="verifyEmail" style="color: var(--accent-primary);"></strong>
-            </p>
-            <p class="text-muted small">Please check your inbox and verify before logging in.</p>
-            <button type="button" class="btn btn-light rounded-pill mt-3 w-100 fw-semibold" data-bs-dismiss="modal">Close</button>
+
+            <p class="text-center text-muted mb-4 small">Sign in to your digital civic portal</p>
+
+            <form id="loginForm">
+                <div class="mb-3">
+                    <label class="form-label small text-muted fw-bold text-uppercase" style="letter-spacing: 0.5px;">Email Address</label>
+                    <div class="input-group">
+                        <span class="input-group-text admin-input text-muted"><i class="bi bi-envelope"></i></span>
+                        <input type="email" id="loginEmail" class="form-control admin-input" placeholder="citizen@example.com" required>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <div class="d-flex justify-content-between">
+                        <label class="form-label small text-muted fw-bold text-uppercase" style="letter-spacing: 0.5px;">Password</label>
+                        <a href="#" class="small text-warning text-decoration-none">Forgot?</a>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text admin-input text-muted"><i class="bi bi-lock"></i></span>
+                        <input type="password" id="loginPassword" class="form-control admin-input" placeholder="••••••••" required>
+                    </div>
+                </div>
+                
+                <button type="button" id="loginBtn" class="btn btn-warning w-100 fw-bold py-2 mb-3">
+                    Sign In <i class="bi bi-arrow-right-short fs-5 align-middle"></i>
+                </button>
+            </form>
+
+            <div class="text-center mt-4 pt-3 border-top border-secondary border-opacity-25">
+                <span class="text-muted small">New to CivicSewa?</span> 
+                <a href="signup.html" class="text-warning text-decoration-none fw-bold small ms-1">Create an Account</a>
+            </div>
         </div>
     </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script type="module" src="auth-check.js"></script>
+    <div class="modal fade glass-modal" id="verificationModal" tabindex="-1" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-secondary border-opacity-25 text-center p-4">
+                <div class="mb-3 text-warning">
+                    <i class="bi bi-envelope-exclamation" style="font-size: 3rem;"></i>
+                </div>
+                <h5 class="fw-bold text-light">Verify Your Email</h5>
+                <p class="text-muted small mt-2">
+                    We've sent a secure verification link to:<br>
+                    <strong id="verifyEmail" class="text-warning fs-6"></strong>
+                </p>
+                <p class="text-muted small">Please check your inbox and verify before logging in.</p>
+                <button type="button" class="btn btn-outline-light rounded-pill mt-3 w-100 fw-semibold" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        if (localStorage.getItem('civicsewa_theme') === 'light') { body.classList.add('light-theme'); if (themeToggle) themeToggle.checked = true; }
+        if (themeToggle) {
+            themeToggle.addEventListener('change', function() {
+                if (this.checked) { body.classList.add('light-theme'); localStorage.setItem('civicsewa_theme', 'light'); } 
+                else { body.classList.remove('light-theme'); localStorage.setItem('civicsewa_theme', 'dark'); }
+            });
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="js/core/auth-check.js"></script>
 </body>
 </html>

@@ -3,28 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CivicSewa | Create Account</title>
+    <title>CivicSewa - Create Account</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     
     <link rel="stylesheet" href="css/base.css">
-    
+
     <style>
         .auth-wrapper {
-            min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+            z-index: 10;
         }
-        .auth-card { width: 100%; max-width: 550px; padding: 2.5rem; }
-        .auth-input {
-            background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white; border-radius: 10px; padding: 10px 14px; width: 100%; transition: 0.3s;
+        .auth-card {
+            width: 100%;
+            max-width: 550px;
+            padding: 2.5rem;
         }
-        .auth-input:focus { background: rgba(0, 0, 0, 0.5); border-color: var(--gold); outline: none; }
-        select.auth-input option { background-color: var(--bg-base); color: white; }
-        .auth-btn {
-            background: linear-gradient(135deg, rgba(255,215,0,0.8), rgba(200,160,0,0.6)); color: #000;
-            font-weight: 700; border: none; padding: 12px; border-radius: 10px; width: 100%; transition: 0.3s;
+        .admin-input {
+            background: rgba(0, 0, 0, 0.4) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: white !important;
+            padding: 10px 15px;
         }
-        .auth-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(255,215,0,0.4); }
+        .admin-input:focus {
+            background: rgba(0, 0, 0, 0.6) !important;
+            border-color: var(--gold) !important;
+            box-shadow: 0 0 0 0.25rem rgba(255, 215, 0, 0.25) !important;
+        }
+        .input-group-text.admin-input {
+            background: rgba(0, 0, 0, 0.5) !important;
+            border-right: none !important;
+        }
+        .form-control.admin-input {
+            border-left: none !important;
+        }
     </style>
 </head>
 <body>
@@ -32,58 +50,75 @@
     <div class="ambient-glow glow-1"></div>
     <div class="ambient-glow glow-2"></div>
 
-    <a href="index.html" class="position-absolute top-0 start-0 m-4 text-decoration-none text-muted d-flex align-items-center gap-2">
-        <i class="bi bi-arrow-left"></i> Back to Home
-    </a>
+    <div class="position-absolute top-0 start-0 w-100 p-4 d-flex justify-content-between align-items-center" style="z-index: 100;">
+        <a href="index.html" class="text-decoration-none text-muted fw-semibold d-flex align-items-center gap-2" style="transition: 0.2s;">
+            <i class="bi bi-arrow-left"></i> Back to Home
+        </a>
+        <label class="theme-slider" title="Toggle Light/Dark Mode">
+            <input type="checkbox" id="themeToggle">
+            <span class="slider-pill"></span>
+        </label>
+    </div>
 
     <div class="auth-wrapper">
-        <div class="glass-box auth-card">
-            <div class="text-center mb-4">
-                <h2 class="fw-bold mb-1">Civic<span style="color: var(--gold);">Sewa</span></h2>
-                <p class="text-muted small">Join the national smart governance network</p>
+        <div class="glass-box auth-card shadow-lg my-4">
+            
+            <div class="text-center mb-3 logo-wrap justify-content-center" style="font-size: 1.8rem;">
+                <i class="bi bi-buildings-fill text-warning"></i> 
+                <span class="nav-text ms-2 fw-bold text-light">Civic<span class="text-warning">Sewa</span></span>
             </div>
+
+            <p class="text-center text-muted mb-4 small">Join the national smart governance network</p>
 
             <form id="regForm">
                 <div class="row g-3 mb-3">
                     <div class="col-md-6">
-                        <label class="form-label text-muted small fw-bold">Full Name</label>
-                        <input type="text" id="fullName" class="auth-input" placeholder="Aayush Sharma" required>
+                        <label class="form-label text-muted small fw-bold text-uppercase">Full Name</label>
+                        <input type="text" id="fullName" class="form-control admin-input" placeholder="Aayush Sharma" required>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label text-muted small fw-bold">Account Type</label>
-                        <select id="userType" class="auth-input" required>
-                            <option value="resident">Citizen / Resident</option>
-                            <option value="ward">Ward Official</option>
+                        <label class="form-label text-muted small fw-bold text-uppercase">Account Type</label>
+                        <select id="userType" class="form-select admin-input" required>
+                            <option value="resident" style="background: #110d20;">Citizen / Resident</option>
+                            <option value="ward" style="background: #110d20;">Ward Official</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="row g-3 mb-3" id="wardFields" style="display: none;">
                     <div class="col-md-6">
-                        <label class="form-label text-muted small fw-bold">Ward No.</label>
-                        <input type="number" id="ward" class="auth-input" placeholder="e.g. 10">
+                        <label class="form-label text-muted small fw-bold text-uppercase text-warning">Assigned Ward No.</label>
+                        <input type="number" id="ward" class="form-control admin-input" placeholder="e.g. 5">
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label text-muted small fw-bold">Municipality</label>
-                        <input type="text" id="muni" class="auth-input" placeholder="Lalitpur">
+                        <label class="form-label text-muted small fw-bold text-uppercase text-warning">Municipality</label>
+                        <input type="text" id="muni" class="form-control admin-input" placeholder="Lalitpur">
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label text-muted small fw-bold">Email Address</label>
-                    <input type="email" id="regEmail" class="auth-input" placeholder="name@example.com" required>
+                    <label class="form-label text-muted small fw-bold text-uppercase">Email Address</label>
+                    <div class="input-group">
+                        <span class="input-group-text admin-input text-muted"><i class="bi bi-envelope"></i></span>
+                        <input type="email" id="regEmail" class="form-control admin-input" placeholder="name@example.com" required>
+                    </div>
                 </div>
 
                 <div class="mb-4">
-                    <label class="form-label text-muted small fw-bold">Password</label>
-                    <input type="password" id="regPass" class="auth-input" placeholder="Create a strong password" required>
+                    <label class="form-label text-muted small fw-bold text-uppercase">Password</label>
+                    <div class="input-group">
+                        <span class="input-group-text admin-input text-muted"><i class="bi bi-shield-lock"></i></span>
+                        <input type="password" id="regPass" class="form-control admin-input" placeholder="Create a strong password" required>
+                    </div>
                 </div>
 
-                <button type="button" id="registerBtn" class="auth-btn">Create Account</button>
+                <button type="button" id="registerBtn" class="btn btn-warning w-100 fw-bold py-2 mt-2 mb-3">
+                    Create Account <i class="bi bi-person-plus ms-1 fs-5 align-middle"></i>
+                </button>
                 
-                <div class="text-center mt-4 small">
+                <div class="text-center mt-4 pt-3 border-top border-secondary border-opacity-25 small">
                     <span class="text-muted">Already have an account?</span> 
-                    <a href="login.html" style="color: var(--gold); text-decoration: none; font-weight: 600;">Sign in here</a>
+                    <a href="login.html" class="text-warning text-decoration-none fw-bold ms-1">Sign in here</a>
                 </div>
             </form>
         </div>
@@ -91,41 +126,55 @@
 
     <div class="modal fade glass-modal" id="verificationModal" tabindex="-1" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content text-center p-4">
+            <div class="modal-content border-secondary border-opacity-25 text-center p-4">
                 <div class="mb-3 text-success">
                     <i class="bi bi-check-circle-fill" style="font-size: 3rem;"></i>
                 </div>
-                <h5 class="fw-bold text-white">Account Created!</h5>
+                <h5 class="fw-bold text-light">Account Created!</h5>
                 <p class="text-muted small mt-2">
-                    We've sent a verification link to:<br>
-                    <strong id="verifyEmail" style="color: var(--gold);"></strong>
+                    We've sent a secure verification link to:<br>
+                    <strong id="verifyEmail" class="text-warning fs-6"></strong>
                 </p>
                 <p class="text-muted small">Please verify your email address before attempting to sign in.</p>
-                <button type="button" class="btn btn-outline-success rounded-pill mt-3 w-100 fw-semibold" onclick="window.location.href='login.html'">Go to Login</button>
+                <button type="button" class="btn btn-outline-success rounded-pill mt-3 w-100 fw-semibold" onclick="window.location.href='login.html'">Proceed to Login</button>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    
     <script>
-        // Ward field toggle logic
-        const userTypeSelect = document.getElementById("userType");
-        const wardFields = document.getElementById("wardFields");
-        
-        userTypeSelect.addEventListener("change", (e) => {
-            if (e.target.value === "ward") {
-                wardFields.style.display = "flex";
-                document.getElementById("ward").required = true;
-                document.getElementById("muni").required = true;
-            } else {
-                wardFields.style.display = "none";
-                document.getElementById("ward").required = false;
-                document.getElementById("muni").required = false;
+        document.addEventListener('DOMContentLoaded', () => {
+            // Theme Engine
+            const themeToggle = document.getElementById('themeToggle');
+            const body = document.body;
+            if (localStorage.getItem('civicsewa_theme') === 'light') { body.classList.add('light-theme'); if (themeToggle) themeToggle.checked = true; }
+            if (themeToggle) {
+                themeToggle.addEventListener('change', function() {
+                    if (this.checked) { body.classList.add('light-theme'); localStorage.setItem('civicsewa_theme', 'light'); } 
+                    else { body.classList.remove('light-theme'); localStorage.setItem('civicsewa_theme', 'dark'); }
+                });
             }
+
+            // Ward Field Logic
+            const userTypeSelect = document.getElementById("userType");
+            const wardFields = document.getElementById("wardFields");
+            const wardInput = document.getElementById("ward");
+            const muniInput = document.getElementById("muni");
+            
+            userTypeSelect.addEventListener("change", (e) => {
+                if (e.target.value === "ward") {
+                    wardFields.style.display = "flex";
+                    wardInput.required = true;
+                    muniInput.required = true;
+                } else {
+                    wardFields.style.display = "none";
+                    wardInput.required = false;
+                    muniInput.required = false;
+                }
+            });
         });
     </script>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module" src="js/core/auth-check.js"></script>
 </body>
 </html>

@@ -4,12 +4,12 @@
 ========================================= */
 
 import { auth, db } from "../core/firebase-config.js";
-import { onAuthStateChanged, signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+import { onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
 let currentUser = null;
 
-// Helper to safely inject text
+// Safe DOM injector
 function setText(id, value) {
     const el = document.getElementById(id);
     if (el) el.innerText = value != null && value !== "" ? value : "—";
@@ -23,23 +23,24 @@ onAuthStateChanged(auth, async (user) => {
     }
     currentUser = user;
 
-    // Set fallback defaults from Auth object
+    // Load initial Auth details for perceived performance
     setText("uNameTop", user.displayName || user.email.split('@')[0]);
     setText("settingsEmail", user.email);
-    setText("settingsFullName", user.displayName || "Citizen");
 
-    // Fetch rich data from Firestore
+    // Fetch rich demographic data from Firestore
     try {
         const snap = await getDoc(doc(db, "users", user.uid));
         if (snap.exists()) {
             const data = snap.data();
-            setText("uNameTop", data.fullName || user.email.split('@')[0]);
             
+            // Header
+            setText("uNameTop", data.fullName || user.email.split('@')[0]);
             const wardTxt = data.wardNumber ? `Ward ${data.wardNumber}` : "Ward --";
             const muniTxt = data.municipality ? `, ${data.municipality}` : "";
             setText("uWard", wardTxt + muniTxt);
             
-            setText("settingsFullName", data.fullName);
+            // Profile Pane
+            setText("settingsFullName", data.fullName || "Citizen");
             setText("settingsWard", data.wardNumber);
             setText("settingsMunicipality", data.municipality);
             
@@ -55,7 +56,6 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 // ================= NOTIFICATION PREFERENCES =================
-// Load saved notification preferences from LocalStorage
 const savedNotif = localStorage.getItem("civicsewa_notif_prefs");
 if (savedNotif) {
     try {
@@ -63,11 +63,9 @@ if (savedNotif) {
         document.getElementById("notifComplaints").checked = prefs.complaints !== false;
         document.getElementById("notifBroadcast").checked = prefs.broadcast !== false;
         document.getElementById("notifEmergency").checked = prefs.emergency === true;
-        document.getElementById("notifEmail").checked = prefs.email !== false;
     } catch (_) {}
 }
 
-// Save Preferences
 const saveNotifBtn = document.getElementById("saveNotifBtn");
 if (saveNotifBtn) {
     saveNotifBtn.addEventListener("click", () => {
@@ -75,39 +73,54 @@ if (saveNotifBtn) {
             complaints: document.getElementById("notifComplaints").checked,
             broadcast: document.getElementById("notifBroadcast").checked,
             emergency: document.getElementById("notifEmergency").checked,
-            email: document.getElementById("notifEmail").checked,
         };
         localStorage.setItem("civicsewa_notif_prefs", JSON.stringify(prefs));
         
-        // UX Feedback
+        // Premium UX Feedback
         const originalText = saveNotifBtn.innerHTML;
-        saveNotifBtn.innerHTML = '<i class="bi bi-check-circle"></i> Saved!';
-        saveNotifBtn.classList.replace("btn-glass-primary", "btn-success");
+        saveNotifBtn.innerHTML = '<i class="bi bi-check-circle me-2"></i>Saved Successfully';
+        saveNotifBtn.classList.replace("btn-gold", "btn-success");
+        saveNotifBtn.style.background = "#198754";
+        saveNotifBtn.style.color = "#fff";
+        
         setTimeout(() => {
             saveNotifBtn.innerHTML = originalText;
-            saveNotifBtn.classList.replace("btn-success", "btn-glass-primary");
-        }, 2000);
+            saveNotifBtn.classList.replace("btn-success", "btn-gold");
+            saveNotifBtn.style.background = ""; // Reset to CSS gradient
+            saveNotifBtn.style.color = "#000";
+        }, 2500);
     });
 }
 
-// ================= SECURE PASSWORD RESET =================
+// ================= ZERO-TRUST SECURITY: PASSWORD RESET =================
 const resetPwdBtn = document.getElementById("resetPasswordBtn");
 if (resetPwdBtn) {
     resetPwdBtn.addEventListener("click", async () => {
         if (!currentUser || !currentUser.email) return;
         
-        if (confirm(`Send a secure password reset link to ${currentUser.email}?`)) {
-            resetPwdBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Sending...';
+        // Confirmation dialog prevents accidental clicks
+        if (confirm(`A secure password reset link will be sent to ${currentUser.email}. Continue?`)) {
+            const originalHTML = resetPwdBtn.innerHTML;
+            resetPwdBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Initiating...';
             resetPwdBtn.disabled = true;
             
             try {
                 await sendPasswordResetEmail(auth, currentUser.email);
-                alert("Security Email Sent! Please check your inbox to safely reset your password.");
-                resetPwdBtn.innerHTML = '<i class="bi bi-envelope-check"></i> Email Sent';
+                
+                resetPwdBtn.classList.replace("btn-outline-warning", "btn-outline-success");
+                resetPwdBtn.innerHTML = '<i class="bi bi-shield-check me-2"></i>Link Sent to Inbox';
+                
+                // Allow resending after 60 seconds
+                setTimeout(() => {
+                    resetPwdBtn.classList.replace("btn-outline-success", "btn-outline-warning");
+                    resetPwdBtn.innerHTML = originalHTML;
+                    resetPwdBtn.disabled = false;
+                }, 60000);
+                
             } catch (e) {
-                console.error(e);
-                alert("Error sending reset email. Please try again later.");
-                resetPwdBtn.innerHTML = '<i class="bi bi-shield-lock me-2"></i> Send Reset Link';
+                console.error("Auth Error:", e);
+                alert("Error sending reset email. Please ensure your account is verified.");
+                resetPwdBtn.innerHTML = originalHTML;
                 resetPwdBtn.disabled = false;
             }
         }
